@@ -1,0 +1,10 @@
+{
+    "require": {
+        "picqer/php-barcode-generator": "^0.2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}
