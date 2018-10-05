@@ -30,15 +30,16 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 
 
 //$generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
-$generator = new \Picqer\Barcode\BarcodeGeneratorSVG();//Ultimos pdf con svg!
+//$generator = new \Picqer\Barcode\BarcodeGeneratorSVG();//Ultimos pdf con svg!
 //$generator = new \App\Generator\BarcodeGeneratorHTML();
+$generator = new \App\Generator\BarcodeGeneratorSVG();
 $code = "EX00014K0005";
 $code = "EX0014K005";
 $code = "C011921022";
 //$code = "C";
 $type = $generator::TYPE_CODE_39;
-$width = 2;
-$totalHeight = 66;
+$width = 1.89;
+$totalHeight = 40;
 $html = <<<EOF
 <table border="0">
 <tbody>
@@ -59,7 +60,6 @@ EOF;
 $html .= $generator->getBarcode($code,$type,$width,$totalHeight);
 $html .= <<<EOF
 <div style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px;">$code</div>
-        width: 1.9, separator: 1.3
 EOF;
 
 
@@ -76,9 +76,10 @@ $options = array(
     'margin-top' => 0,
     'margin-right' => 0,
     'margin-bottom' => 0,
-    'page-width' => 49.5,
-    'page-height' => 27.5,
+    'page-width' => 49,//mm
+    'page-height' => 27.5,//mm
 );
+//2.0 y 1.3
 //140 × 78
 $pdf->setOptions($options);
 
