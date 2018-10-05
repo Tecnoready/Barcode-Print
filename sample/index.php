@@ -30,8 +30,58 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 
 
 $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+$code = "EX00014K0005";
+//$code = "C011921022";
+$type = "C39";
+$html = <<<EOF
+<table border="0">
+<tbody>
+<tr>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px; height: 5px;" colspan="2"><strong>EX00024</strong></td>
+</tr>
+<tr>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px; height: 5px;" width="50%">Ancho: 1430 mm</td>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px; height: 5px;" width="50%">Peso: 204.15 kg</td>
+</tr>
+<tr>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px;">Espeso: 30 mic</td>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px;">Largo: 5157.08 M</td>
+</tr>
+</tbody>
+</table>
+EOF;
+$html .= $generator->getBarcode($code, $generator::TYPE_CODE_39,1,40);
+$html .= <<<EOF
+<div style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px;">$code</div>
+EOF;
 
 
+use mikehaertl\wkhtmlto\Pdf;
+
+// You can pass a filename, a HTML string, an URL or an options array to the constructor
+$pdf = new Pdf();
+$pdf->addPage('<html>'.$html.'</html>');
+
+$options = array(
+    'no-outline',           // option without argument
+    'encoding' => 'UTF-8',  // option with argument
+    'margin-left' => 0,
+    'margin-top' => 0,
+    'margin-right' => 0,
+    'margin-bottom' => 0,
+    'page-width' => 50,
+    'page-height' => 28,
+);
+$pdf->setOptions($options);
+
+// On some systems you may have to set the path to the wkhtmltopdf executable
+// $pdf->binary = 'C:\...';
+
+if (!$pdf->saveAs(__DIR__.'/page.pdf')) {
+    $error = $pdf->getError();
+    // ... handle error here
+}
+$pdf->send();
 ?>
 
 <!DOCTYPE html>
