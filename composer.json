@@ -1,6 +1,7 @@
 {
     "require": {
-        "picqer/php-barcode-generator": "^0.2.2"
+        "picqer/php-barcode-generator": "^0.2.2",
+        "mikehaertl/phpwkhtmltopdf": "^2.3"
     },
     "autoload": {
         "psr-4": {

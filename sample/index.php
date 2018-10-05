@@ -31,8 +31,10 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 
 $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
 $code = "EX00014K0005";
-//$code = "C011921022";
-$type = "C39";
+$code = "EX0014K005";
+$code = "C011921022";
+$type = $generator::TYPE_CODE_39;
+$width = 1.1;
 $html = <<<EOF
 <table border="0">
 <tbody>
@@ -50,7 +52,7 @@ $html = <<<EOF
 </tbody>
 </table>
 EOF;
-$html .= $generator->getBarcode($code, $generator::TYPE_CODE_39,1,40);
+$html .= $generator->getBarcode($code,$type,$width,40);
 $html .= <<<EOF
 <div style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 10px;">$code</div>
 EOF;
@@ -69,9 +71,10 @@ $options = array(
     'margin-top' => 0,
     'margin-right' => 0,
     'margin-bottom' => 0,
-    'page-width' => 50,
-    'page-height' => 28,
+    'page-width' => 49.5,
+    'page-height' => 27.5,
 );
+//140 × 78
 $pdf->setOptions($options);
 
 // On some systems you may have to set the path to the wkhtmltopdf executable
@@ -79,6 +82,9 @@ $pdf->setOptions($options);
 
 if (!$pdf->saveAs(__DIR__.'/page.pdf')) {
     $error = $pdf->getError();
+    var_dump($error);
+    die;
+//    sh: wkhtmltopdf: command not found
     // ... handle error here
 }
 $pdf->send();
@@ -93,7 +99,7 @@ $pdf->send();
     <body>
         Demo de pdf
         <?php
-        echo $generator->getBarcode('EX00014K0005', $generator::TYPE_CODE_39);
+        echo $html;
         ?>
     </body>
 </html>
