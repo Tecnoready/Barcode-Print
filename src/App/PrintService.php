@@ -5,6 +5,7 @@ namespace App;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Picqer\Barcode\BarcodeGenerator;
+use Twig_Environment;
 
 /**
  * Servicio para generar documento para imprimir
@@ -14,21 +15,23 @@ use Picqer\Barcode\BarcodeGenerator;
 class PrintService 
 {
     private $options;
+    private $twig;
     
-    function __construct($options) {
-        
+    function __construct(Twig_Environment $twig,$options) {
+        $this->twig = $twig;
         $resolver = new OptionsResolver();
         
         $resolver->setRequired([
-            "page-width","page-height"
+            "page-width","page-height","name_var_"
         ]);
         
         $resolver->setDefaults([
-            "margin-left" => 0,
-            "margin-top" => 0,
-            "margin-right" => 0,
-            "margin-bottom" => 0,
+            "margin-left" => 0.0,
+            "margin-top" => 0.0,
+            "margin-right" => 0.0,
+            "margin-bottom" => 0.0,
             "tmpDir" => null,
+            "cacheDir" => null,
             "binary" => "wkhtmltopdf",
             "type_code" => BarcodeGenerator::TYPE_CODE_39,
         ]);
@@ -43,8 +46,11 @@ class PrintService
         $this->options = $resolver->resolve($options);
     }
 
-    public function generatePdf($filename,$barcode,$content,array $parameters = []) {
+    public function generatePdf($filename,$barcode,$templateString,array $context = [],array $options = []) {
         //pdf
+        $template =$this->twig->createTemplate($templateString);
+        $view = $template->render($context);
+        var_dump($view);
     }
     
     public function saveAs($htmlTwig) {
