@@ -5,9 +5,11 @@ namespace App\Exception;
 use RuntimeException;
 
 /**
+ * Excepcion que ocurre cuando no se puede generar el pdf
  *
  * @author Carlos Mendoza <inhack20@gmail.com>
  */
-class CacheException extends RuntimeException 
+class GeneratePdfException extends RuntimeException
 {
+    
 }
