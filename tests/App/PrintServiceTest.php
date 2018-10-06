@@ -18,6 +18,9 @@ class PrintServiceTest extends TestCase {
         $options = [
             "page-width" => 27.5,
             "page-height" => 49,
+            "var-barcode" => "img_codigo_barras",
+            "barcode-height" => 60,
+            "barcode-width-factor" => 1.95,
         ];
         $printService = new PrintService($twig, $options);
         
@@ -46,7 +49,6 @@ EOF;
         ];
         $context = [
             "extrusion" => $extrusion,
-            "img_codigo_barras" => null,//Codigo generado
             "codigo_barras" =>  $barcode,
             "texto_inconforme" =>  "Texto en variable conforme.",
         ];
