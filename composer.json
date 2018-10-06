@@ -8,12 +8,12 @@
     },
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "Tecnoready\\": "src/"
         }
     },
      "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\Tecnoready\\": "tests/"
         }
     }
 }

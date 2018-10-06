@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Generator;
+namespace Tecnoready\Barcode\Generator;
 
 use Picqer\Barcode\BarcodeGeneratorHTML as Base;
 

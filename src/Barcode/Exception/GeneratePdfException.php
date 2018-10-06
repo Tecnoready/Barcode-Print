@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exception;
+namespace Tecnoready\Barcode\Exception;
 
 use RuntimeException;
 

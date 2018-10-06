@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\App;
+namespace Tests\Tecnoready\Barcode;
 
 use PHPUnit\Framework\TestCase;
-use App\PrintService;
+use Tecnoready\Barcode\PrintService;
 use Twig_Environment;
 
 /**
@@ -16,8 +16,8 @@ class PrintServiceTest extends TestCase {
     public function testGeneratePdf() {
         $twig = $this->getTwig();
         $options = [
-            "page-width" => 27.5,
-            "page-height" => 49,
+            "page-width" => 49.0,
+            "page-height" => 27.5,
             "var-barcode" => "img_codigo_barras",
             "barcode-height" => 60,
             "barcode-width-factor" => 1.95,
@@ -35,17 +35,23 @@ class PrintServiceTest extends TestCase {
     </tbody>
 </table>
 <p style="text-align: center; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 14px;">
-    {{img_codigo_barras}}<br /><strong>{{codigo_barras}}</strong><br /><strong>{{texto_inconforme}}</strong>
+    {{img_codigo_barras | raw}}<br /><strong>{{codigo_barras}}</strong><br /><strong>{{texto_inconforme}}</strong>
 </p>
 EOF;
-        $filename = "demo.pdf";
+        
+//    $templateString = <<<EOF
+//            demo
+//            {{img_codigo_barras | raw}}
+//EOF;
+        $filename = $this->getFileNameDemo();
+        
         $barcode = "CB0080K001";
         
         $extrusion = [
-            "numero" => 52,
+            "numero" => "EC00252",
             "ancho" => 20,
             "espesor" => 20,
-            "largo_rollo" => "100",
+            "largo_rollo" => "4789.4",
         ];
         $context = [
             "extrusion" => $extrusion,
@@ -54,6 +60,7 @@ EOF;
         ];
         
         $printService->generatePdf($filename, $barcode, $templateString,$context);
+        $this->assertFileExists($filename);
     }
 
     /**
@@ -65,6 +72,16 @@ EOF;
             "strict_variables" => true,
         ]);
         return $twig;
+    }
+    
+    private function getFileNameDemo() {
+        $filename = __DIR__."/../demo.pdf";
+        @unlink($filename);
+        return $filename;
+    }
+    
+    protected function tearDown() {
+        $this->getFileNameDemo();
     }
 
 }
