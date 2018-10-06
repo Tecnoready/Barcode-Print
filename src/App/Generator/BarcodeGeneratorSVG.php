@@ -39,7 +39,7 @@ class BarcodeGeneratorSVG extends Base
         $positionHorizontal = 0;
         foreach ($barcodeData['bars'] as $bar) {
             if($bar['width'] === "3"){
-                $bar['width'] = "2";
+                $bar['width'] = "2.5";
             }
             if($bar['width'] === "1"){
                 $bar['width'] = "1";

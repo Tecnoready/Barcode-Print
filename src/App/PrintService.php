@@ -39,6 +39,9 @@ class PrintService
         $this->options = $resolver->resolve($options);
     }
 
+    public function functionName($contenidoPlantilla,$parametros,$code) {
+        
+    }
     
     public function saveAs($htmlTwig) {
         
