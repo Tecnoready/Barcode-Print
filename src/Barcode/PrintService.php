@@ -64,8 +64,7 @@ class PrintService
      * @throws Exception
      */
     public function generatePdf($filename,$code,$templateString,array $context = [],array $options = []) {
-        $context[$this->options["var-barcode"]] = $this->generateQR($code);
-        $view = $this->renderView($templateString, $context);
+        $view = $this->renderView($code,$templateString, $context);
         
         $resolver = new OptionsResolver();
         $resolver->setRequired([
@@ -101,7 +100,7 @@ class PrintService
         if (!$pdf->saveAs($filename)) {
             $error = $pdf->getError();
             //sh: wkhtmltopdf: command not found (Error que da cuando no encuentra el binario de wkhtmltopdf)
-            throw new Exception(sprintf("Ocurrio un error generando el pdf: '%s'",$error));
+            throw new GeneratePdfException(sprintf("Ocurrio un error generando el pdf: '%s'",$error));
         }
         return true;
     }
@@ -109,7 +108,7 @@ class PrintService
     /**
      * Genera el codigo QR en html con SVG
      * @param type $code string del codigo qr
-     * @return type
+     * @return string
      */
     public function generateQR($code) {
         $generator = new BarcodeGeneratorSVG();
@@ -118,11 +117,14 @@ class PrintService
     
     /**
      * Rendezia la vista
+     * @param type $code
      * @param type $templateString
      * @param array $context
      * @return type
      */
-    private function renderView($templateString,array $context = []) {
+    public function renderView($code,$templateString,array $context = []) {
+        $context[$this->options["var-barcode"]] = $this->generateQR($code);
+        
         $template =$this->twig->createTemplate($templateString);
         return $template->render($context);
     }
