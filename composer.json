@@ -1,11 +1,23 @@
 {
+    "name": "tecnoready/barcode-print",
+    "description": "Servicio para generar pdf con codigo de barra",
+    "type": "library",
     "require": {
         "picqer/php-barcode-generator": "^0.2.2",
         "mikehaertl/phpwkhtmltopdf": "^2.3",
         "symfony/options-resolver": "^3.4",
-        "twig/twig": "^2.0",
+        "twig/twig": "^2.0"
+    },
+    "require-dev": {
         "symfony/phpunit-bridge": "^4.1"
     },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos Mendoza",
+            "email": "inhack20@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Tecnoready\\": "src/"
