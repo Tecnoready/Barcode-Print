@@ -17,7 +17,16 @@ use Tecnoready\Barcode\Exception\GeneratePdfException;
  */
 class PrintService 
 {
+    /**
+     * Opciones de configuracion
+     * @var array
+     */
     private $options;
+    
+    /**
+     * Instancia de twig para renderizar las plantillas
+     * @var Twig_Environment 
+     */
     private $twig;
     
     function __construct(Twig_Environment $twig,$options) {
