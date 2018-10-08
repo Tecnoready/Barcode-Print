@@ -199,6 +199,24 @@ EOF;
     {{img_codigo_barras | raw}}<br /><strong>{{codigo_barras}}</strong><br /><strong>{{texto_inconforme}}</strong>
 </p>
 EOF;
+        $templateString = <<<EOF
+<table border="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 8px; height: 0px;" colspan="2"><strong>{{extrusion.numero}}</strong></td>
+</tr>
+<tr>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 8px; height: 0px;" width="50%">Ancho: {{producto.ancho}}mm</td>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 8px; height: 0px;" width="50%">Peso: {{rollo.peso}}kg</td>
+</tr>
+<tr>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 8px;">Espesor: {{producto.espesor}}mic</td>
+<td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 8px;">Largo: {{extrusion.largo_rollo}}m</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 8px;">{{img_codigo_barras | raw}}<br /><strong>{{codigo_barras}}</strong> <strong>{{texto_inconforme}}</strong></p>
+EOF;
         
         $filename = $this->getFileNameDemo();
         
@@ -210,13 +228,23 @@ EOF;
             "espesor" => 20,
             "largo_rollo" => "4789.4",
         ];
+        $producto = [
+            "ancho" => "ancho",
+            "espesor" => "espesor",
+        ];
         $context = [
             "extrusion" => $extrusion,
             "codigo_barras" =>  $barcode,
             "texto_inconforme" =>  "Texto en variable conforme.",
+            "producto" =>  $producto,
+            "rollo" => [
+                "peso" => "peso"
+            ]
         ];
         
-        $printService->generatePdf($filename, $barcode, $templateString,$context);
+        $printService->generatePdf($filename, $barcode, $templateString,$context,[
+            "copies" => 1,
+        ]);
         $this->assertFileExists($filename);
     }
     
@@ -240,15 +268,15 @@ EOF;
             "page-width" => 49.0,
             "page-height" => 27.5,
             "var-barcode" => "img_codigo_barras",
-            "barcode-height" => 60,
-            "barcode-width-factor" => 1.95,
+            "barcode-height" => 30,
+            "barcode-width-factor" => 0.96,
         ];
         return new PrintService($twig, $options);
     }
 
     private function getFileNameDemo() {
         $filename = __DIR__."/../demo.pdf";
-        @unlink($filename);
+//        @unlink($filename);
         return $filename;
     }
     

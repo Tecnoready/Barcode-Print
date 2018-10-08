@@ -82,6 +82,7 @@ class PrintService
         
         //Parametros para generar el pdf
         $resolver->setDefaults([
+            "copies"=> 1,
             "margin-left" => 0.0,//Margen izquierdo
             "margin-top" => 0.0,//Margen superior
             "margin-right" => 0.0,//Margen derecho
@@ -90,7 +91,14 @@ class PrintService
             'no-outline',           // option without argument
             "page-width" => $this->options["page-width"],
             "page-height" => $this->options["page-height"],
+            'disable-smart-shrinking',
+            'lowquality',
+            'commandOptions' => [
+                    'locale' => 'es_ES.utf-8',
+                    'procEnv' => ['LANG' => 'es_ES.utf-8'],
+            ]
         ]);
+        
         $resolver->setAllowedTypes("page-width","float");
         $resolver->setAllowedTypes("page-width","float");
         $resolver->setAllowedTypes("margin-left","float");
@@ -99,12 +107,16 @@ class PrintService
         $resolver->setAllowedTypes("margin-bottom","float");
         
         $options = $resolver->resolve($options);
+        $copies = $options["copies"];
+        unset($options["copies"]);
         
         $pdf = new Pdf();
         $pdf->tmpDir = $this->options["tmpDir"];
         $pdf->binary = $this->options["binary"];
         $pdf->setOptions($options);
-        $pdf->addPage('<html>'.$view.'</html>');
+        for($i=1 ; $i <= $copies;$i++){
+            $pdf->addPage('<html>'.$view.'</html>');
+        }
         
         if (!$pdf->saveAs($filename)) {
             $error = $pdf->getError();
